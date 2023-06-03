@@ -1,0 +1,11 @@
+Today I completed my peer review of my fellow student's project.
+
+Additionally I setup my OpenAPI account. I created a simple hello world application in python that makes a call
+to the OpenAI API. At first I had trouble getting the system to respond as desired, but after reading about
+prompt engineering on the OpenAPI website I figured out how to make it response as desired. This is using the GPT-3.5
+turbo model. I learned that GPT-3.5 turbo is the last iteration of the GPT-3 model until the GPT-4 model is live.
+GPT-3.5 turbo is apparently much more efficient that prior models, which results in less costs to use for api developers.
+
+I also learned today that GPT-4 is in beta and you have to be on a waiting list to try it out. So for now I will
+utilize gpt-3.5 turbo. Then I will fine-tune gpt-3.5 turbo. Then if I am given access I will use gpt-4. The results
+in theory will get better with each iteration.
