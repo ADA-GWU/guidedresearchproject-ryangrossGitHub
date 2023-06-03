@@ -2,10 +2,12 @@ import os
 import openai
 openai.organization = os.getenv("OPENAI_ORGANIZATION")
 openai.api_key = os.getenv("OPENAI_API_KEY")
-response = openai.Completion.create(
-  model="text-davinci-003",
-  prompt="Hello",
-  max_tokens=7,
-  temperature=0
+completion = openai.ChatCompletion.create(
+  model="gpt-3.5-turbo",
+  temperature=0,
+  messages=[
+    {"role": "user", "content": "Given: Goodbye, Say: Goodbye World, Given: Hello, Say: "},
+  ]
 )
-print(response)
+
+print(completion.choices[0].message.content)
