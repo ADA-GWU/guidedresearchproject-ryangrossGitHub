@@ -1,0 +1,5 @@
+Today I looked at the https://github.com/CIA-Oceanix/TrAISformer repo to better understand it. This repo modifies the
+gpt-2 open source code, hard-coding specific parts of the code-base to work specifically for vessel trajectory
+prediction. I was able to run the code with the debugger in pycharm to better understand what the data files look like.
+I've added the test and train data files to my repo, as I want to do an apples to apples comparison of gpt-4 with the
+results from the TrAISformer paper.
