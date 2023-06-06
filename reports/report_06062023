@@ -1,0 +1,5 @@
+Today I spent a little more time looking at the test and train pickel files in my data folder. The values are all
+normalized, meaning latitude and longitude values are showing as float values less than 1. It took me a little while
+to understand why the data looked this way. My next steps will be to write a function to scale the normalized values
+back to normal in order to better check how the gpt-3.5-turbo system performs. Scaling back to normal values will also
+allow me to visualize the points on a map.
