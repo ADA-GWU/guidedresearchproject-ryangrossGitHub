@@ -1,0 +1,15 @@
+Today worked with the https://github.com/CIA-Oceanix/TrAISformer repo to understand how it is sending test and training
+data to the model. I need to understand this because I am going to use the same method, but against gpt 3.5 turbo
+instead of gpt-2, as was done by the Traisformer author. I want to use the same method so I have an apples to apples
+comparison between models. In order to do this I had to run the code in debug mode stepping through to understand how
+the data is being formatted, handled, and processed by the existing model. I was then able to generate 6 input, ouput
+sets, so that I can do a few shot test on gpt 3.5 turbo. Few shot is providing a model with only a handful of input
+output examples, and then the last example the model has to guess the output from an input. In my case I was able to
+feed it 2 input output pairs, then a final input, and have it calculate the output. I don't expect the model to provide
+an accurate answer given the problem, but my hope was the model would generate an ouput of the right format. Meaning if
+the model gives a set of coordinates as the output, that would be success, rather than it replying back in full english
+phrases. Going in I had confidence this would work using the correct prompt methodoligy, which I read about in the
+Language Models are Few Shot Learners paper. On the first try, I exceeded the prompt maximum of 4097 tokens, so I had
+to drop the original 5 examples down to just 2. After pushing the two example prompts, GPT 3.5 turbo did output the
+correct data format, which marks a nice milestone for the project. I pushed the few shot training, test, and output
+files for reference in my paper.
