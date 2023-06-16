@@ -1,0 +1,8 @@
+Today I read feedback from Prof Jamal, questioning whether larger language models would actually translate to better
+ship trajectory prediction. This is a valid concern. I found two papers which I added to my project that both claim
+to obtain similar few-shot performance as GPT3, at a fraction of the model and training data size. After reading these
+papers my impression is that yes it is possible to get similar results with smaller models, but it also requires more
+manual, logic-like training of the model. In other words, it almost feels like a hybrid of a LLM and an expert system
+shown patterns that it should pick up on. This is a fine approach, but expert systems have always performed better than
+machine learning methods. The larger model would at least reduce the amount of time/effort that I will need to put forth
+to get results.

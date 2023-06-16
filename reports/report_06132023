@@ -1,0 +1,10 @@
+Today I read two papers published by OpenAI. One paper covered scaling laws of LLMs. This paper
+details the observed improvements in performance and transfer/few shot learning as several LLM
+factors scale up. The main take away from this paper is that the larger the model is the more
+detail it can pick up on. This leads to greater generic language abilities. Suprisingly they found
+that if the unsurpervised training data size outpaces the model size, it can start to lead to
+overfitting and general negative impacts on performance. The second paper covers InstructGPT. I had
+not heard of Instruct GPT until coming across this paper. This model is very similar to ChatGPT
+but the human reinforcement training that occurs after the unsurpervised training rewards the model
+for following instruction, rather than being conversational. I will likely try the InstructGPT model
+in my project to compare results with ChatGPT.
