@@ -1,0 +1,14 @@
+Today I investigated an alternative technique to "fine-tuning" that a co-worker meantioned to me. The technique is to
+use a vector database. The idea is that instead of having to push all the training data to the gpt model at training
+time, you can instead put the training data into a vector database, which gpt will leverage at run time. The benefit
+to this approach is it extends the long-term storage that a model has, external to the model, and external to the
+Open AI service. This allows one to manage their own data and potentially use it with other LLMs. While I didn't read
+any formal papers on the topic, I read many articles online.
+https://betterprogramming.pub/enhancing-chatgpt-with-infinite-external-memory-using-vector-database-and-chatgpt-retrieval-plugin-b6f4ea16ab8
+https://www.pinecone.io/learn/vector-database/
+https://medium.com/@ignacio.de.gregorio.noblejas/vector-databases-f1e05971a9b1
+https://blocksandfiles.com/2023/04/28/chatgpt-pinecone-100-million-funding/
+https://aws.amazon.com/what-is/vector-databases/
+
+For my project I think I will continue to use fine tuning, but if I have time I may also try the vector database
+approach to compare results.

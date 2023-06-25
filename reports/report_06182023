@@ -1,9 +1,9 @@
 Today I cleaned up a few issues with my last few shot test run. First I noticed that some of the numeric values were
-formated using -e to represent shifting decimal places. I'm not sure, but I am assuming the fact that some test files
+formatted using -e to represent shifting decimal places. I'm not sure, but I am assuming the fact that some test files
 use the -e formatting while other don't may cause issues. The formatting is just a result of python's default printing
 format of the values. Another fix I made was setting the output vessel trajectories to have the same number of points.
 The example trajectories I extracted have varying lengths, and while I restricted the inputs to just 18 points, the
 outputs had no restrictions. I cut the outputs off after 18 points for all the training examples. I only chose 18
-because I want an apples to appples comparison of the GPT-2 paper's performance, and they chose 18 examples for the
+because I want an apples to apples comparison of the GPT-2 paper's performance, and they chose 18 examples for the
 input. My next task will be to plot the actual and predicted trajectories, and calculate loss. From there I will
 "fine-tune" the model, where it has many training examples, and see how much better the performance is.
