@@ -1,0 +1,5 @@
+After being recently asked about open source alternatives to GPT, I wanted to see if there are any models comparable to GPT.
+I found several models in this article: https://beebom.com/best-large-language-models-llms/
+It seems llike ClaudeV1 is the leading open source model. It turns out this model is funded by Google and former OpenAI employees
+are part of the team. This model has beat Google's own PALM LLM on certain benchmarks. If I have extra time at the end of the
+project I would like to compare my GPT3.5 results to ClaudeV1 results.
