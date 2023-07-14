@@ -20,14 +20,9 @@ masks = torch.tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1
                        1., 1., 1., 1., 1., 1.]])
 masks = masks[:, :max_seqlen].to(device)
 
-preds = torch.tensor([few_shot_vals.pred])
-inputs = torch.tensor([few_shot_vals.actuals])
+pred_errors = []
 
-input_coords = (inputs * v_ranges + v_roi_min) * torch.pi / 180
-pred_coords = (preds * v_ranges + v_roi_min) * torch.pi / 180
-
-
-def haversine(input_coords,
+def haversine(actuals_coords,
               pred_coords):
     """ Calculate the haversine distances between input_coords and pred_coords.
 
@@ -39,48 +34,77 @@ def haversine(input_coords,
         The havesine distances between
     """
     R = 6371
-    lat_errors = pred_coords[..., 0] - input_coords[..., 0]
-    lon_errors = pred_coords[..., 1] - input_coords[..., 1]
+    lat_errors = pred_coords[..., 0] - actuals_coords[..., 0]
+    lon_errors = pred_coords[..., 1] - actuals_coords[..., 1]
     a = torch.sin(lat_errors / 2) ** 2 \
-        + torch.cos(input_coords[:, :, 0]) * torch.cos(pred_coords[:, :, 0]) * torch.sin(lon_errors / 2) ** 2
+        + torch.cos(actuals_coords[:, :, 0]) * torch.cos(pred_coords[:, :, 0]) * torch.sin(lon_errors / 2) ** 2
     c = 2 * torch.atan2(torch.sqrt(a), torch.sqrt(1 - a))
     d = R * c
     return d
 
-d = haversine(input_coords, pred_coords) * masks
-pred_errors = d.detach().cpu().numpy()[0]
 
-## Convert km to nautical miles
-conversion_factor = 0.539957
-pred_errors = [i * conversion_factor for i in pred_errors]
+def eval(pred, actuals):
+    global pred_errors
+    preds = torch.tensor([few_shot_vals.pred])
+    actuals = torch.tensor([few_shot_vals.actuals])
 
-## Plot
-# ===============================
-plt.figure(figsize=(9, 6), dpi=150)
-v_times = np.arange(len(pred_errors)) / 6
-plt.plot(v_times, pred_errors)
+    actuals_coords = (actuals * v_ranges + v_roi_min) * torch.pi / 180
+    pred_coords = (preds * v_ranges + v_roi_min) * torch.pi / 180
 
-timestep = 6
-plt.plot(1, pred_errors[timestep], "o")
-plt.plot([1, 1], [0, pred_errors[timestep]], "r")
-plt.plot([0, 1], [pred_errors[timestep], pred_errors[timestep]], "r")
-plt.text(1.12, pred_errors[timestep] - 0.5, "{:.4f}".format(pred_errors[timestep]), fontsize=10)
+    d = haversine(actuals_coords, pred_coords) * masks
+    errors = d.detach().cpu().numpy()[0]
 
-timestep = 12
-plt.plot(2, pred_errors[timestep], "o")
-plt.plot([2, 2], [0, pred_errors[timestep]], "r")
-plt.plot([0, 2], [pred_errors[timestep], pred_errors[timestep]], "r")
-plt.text(2.12, pred_errors[timestep] - 0.5, "{:.4f}".format(pred_errors[timestep]), fontsize=10)
+    ## Convert km to nautical miles
+    conversion_factor = 0.539957
+    pred_errors.append([i * conversion_factor for i in errors])
 
-timestep = 17
-plt.plot(3, pred_errors[timestep], "o")
-plt.plot([3, 3], [0, pred_errors[timestep]], "r")
-plt.plot([0, 3], [pred_errors[timestep], pred_errors[timestep]], "r")
-plt.text(3.12, pred_errors[timestep] - 0.5, "{:.4f}".format(pred_errors[timestep]), fontsize=10)
-plt.xlabel("Time (hours)")
-plt.ylabel("Prediction errors (miles)")
-plt.xlim([0, 12])
-plt.ylim([0, 20])
-plt.savefig("prediction_error.png")
+def average_errors():
+    global pred_errors
 
-plt.show()
+    averages = []
+    for i in range(init_seqlen):
+        average_error = 0
+        avg_count = 0
+        for errors in pred_errors:
+            try:
+                average_error += errors[i]
+                avg_count += 1
+            except:
+                x = 1
+
+        averages.append(average_error/avg_count)
+
+    return averages
+
+
+def plot():
+    preds = average_errors()
+
+    ## Plot
+    # ===============================
+    plt.figure(figsize=(9, 6), dpi=150)
+    v_times = np.arange(len(preds)) / 6
+    plt.plot(v_times, preds)
+
+    timestep = 6
+    plt.plot(1, preds[timestep], "o")
+    plt.plot([1, 1], [0, preds[timestep]], "r")
+    plt.plot([0, 1], [preds[timestep], preds[timestep]], "r")
+    plt.text(1.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
+
+    timestep = 12
+    plt.plot(2, preds[timestep], "o")
+    plt.plot([2, 2], [0, preds[timestep]], "r")
+    plt.plot([0, 2], [preds[timestep], preds[timestep]], "r")
+    plt.text(2.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
+
+    timestep = 17
+    plt.plot(3, preds[timestep], "o")
+    plt.plot([3, 3], [0, preds[timestep]], "r")
+    plt.plot([0, 3], [preds[timestep], preds[timestep]], "r")
+    plt.text(3.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
+    plt.xlabel("Time (hours)")
+    plt.ylabel("Prediction errors (miles)")
+    plt.xlim([0, 12])
+    plt.ylim([0, 20])
+    plt.savefig("prediction_error.png")

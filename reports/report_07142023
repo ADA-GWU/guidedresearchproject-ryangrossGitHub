@@ -1,0 +1,4 @@
+Today I tried to adjust the prompt engineering to have the system only guess lat and lon, not speed or direction.
+It performed horribly, as in over 20mile error after the first hour. So I think the input being an array of size 4
+and an output being size 2 really confused GPT. When I have it guess all 4 values for the output it does much better,
+just over 1mile error for the first two hours.
