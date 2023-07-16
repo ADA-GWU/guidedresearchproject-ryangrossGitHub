@@ -1,7 +1,6 @@
 import torch as torch
 import matplotlib.pyplot as plt
 import numpy as np
-import few_shot_vals
 
 device = torch.device("cpu")
 
@@ -45,8 +44,8 @@ def haversine(actuals_coords,
 
 def eval(pred, actuals):
     global pred_errors
-    preds = torch.tensor([few_shot_vals.pred])
-    actuals = torch.tensor([few_shot_vals.actuals])
+    preds = torch.tensor([pred])
+    actuals = torch.tensor([actuals])
 
     actuals_coords = (actuals * v_ranges + v_roi_min) * torch.pi / 180
     pred_coords = (preds * v_ranges + v_roi_min) * torch.pi / 180
@@ -107,4 +106,4 @@ def plot():
     plt.ylabel("Prediction errors (miles)")
     plt.xlim([0, 12])
     plt.ylim([0, 20])
-    plt.savefig("prediction_error.png")
+    plt.savefig("results/prediction_error.png")

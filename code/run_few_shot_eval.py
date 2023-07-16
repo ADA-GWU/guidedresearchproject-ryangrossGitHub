@@ -3,8 +3,9 @@ import numpy
 import json
 import large_language_model as llm
 import evaluate
+import visualize
 
-pred_count_desired = 1 # Number of predictions you want to average for accuracy/loss metrics
+pred_count_desired = 10 # Number of predictions you want to average for accuracy/loss metrics
 pred_hours = 3 # This can be changed to get longer predictions
 minutes_per_sample = 10 # This is not configurable, this is how the data was gathered
 sample_count = int(60/minutes_per_sample * pred_hours)
@@ -18,6 +19,10 @@ def parse_pred_string(pred):
     for line in pred_lines:
         if line.endswith("]"):
             pred_array.append(json.loads(line))
+
+    # Add extra rows if the LLM stopped early
+    while len(pred_array) < sample_count:
+        pred_array.append(pred_array[-1])
 
     return pred_array
 
@@ -34,7 +39,7 @@ with open('../data/train.pkl', 'rb') as f:
             input = traj_slim[0:sample_count]
             prompt += "INPUT:\n" + "\n".join(map(str, input.tolist())) + "\n"
 
-            output = traj_slim[sample_count+1:(sample_count+1)*2]
+            output = traj_slim[sample_count:sample_count*2]
             if training_sample_count_actual != training_sample_count_desired:
                 prompt += "OUTPUT:\n" + "\n".join(map(str, output.tolist())) + "\n"
             else:
@@ -43,12 +48,17 @@ with open('../data/train.pkl', 'rb') as f:
 
             training_sample_count_actual += 1
             if training_sample_count_actual == training_sample_count_desired + 1: # Need an input for the prediction
+                # Predict
                 pred = llm.generate(prompt)
-                print(pred)
-
+                # Format prediction
                 pred_array = parse_pred_string(pred)
+                # Visualize prediction
+                visualize.plot(input, output, pred_array, 'results/fewShot_'+str(pred_count_actual+1))
+                # Evaluate loss
                 evaluate.eval(pred_array, output)
 
+                # Reset values
+                prompt = ""
                 training_sample_count_actual = 0
                 pred_count_actual += 1
 
