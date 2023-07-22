@@ -76,7 +76,7 @@ def average_errors():
     return averages
 
 
-def plot():
+def plot(folder):
     preds = average_errors()
 
     ## Plot
@@ -106,4 +106,4 @@ def plot():
     plt.ylabel("Prediction errors (miles)")
     plt.xlim([0, 12])
     plt.ylim([0, 20])
-    plt.savefig("results/prediction_error.png")
+    plt.savefig(folder + "/prediction_error.png")

@@ -1,0 +1,9 @@
+Today I started reading the OpenAI doc on fine-tuning. It turns out gpt 3.5 turbo does not support fine tuning.
+So now I have to redo my base line results using model that does allow for fine-tuning. I'm going to have to use
+the gpt 3 divinci model as the new base line so I can compare few shot and fine tuning results.
+
+Unfortunatley divinci has half the context length of gpt 3.5 turbo, so I could only feed in an hour of data. The results
+are much worse, and I'm sure the shorter context is mostly to blame.
+
+I also started to try out gpt 4 few shot learning through chatgpt plus ($20 subscription fee). Oddly, gpt 4 is doing
+the worst out of all the models. I may just not be doing the correct prompt engineering for this model.

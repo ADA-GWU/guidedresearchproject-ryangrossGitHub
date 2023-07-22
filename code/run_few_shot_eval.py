@@ -5,6 +5,8 @@ import large_language_model as llm
 import evaluate
 import visualize
 
+model = "gpt-3.5-turbo"
+
 pred_count_desired = 10 # Number of predictions you want to average for accuracy/loss metrics
 pred_hours = 3 # This can be changed to get longer predictions
 minutes_per_sample = 10 # This is not configurable, this is how the data was gathered
@@ -17,7 +19,9 @@ def parse_pred_string(pred):
     pred_lines = pred.splitlines()
 
     for line in pred_lines:
-        if line.endswith("]"):
+        if len(pred_array) == sample_count:
+            break  # Cut off extra content
+        elif line.endswith("]"):
             pred_array.append(json.loads(line))
 
     # Add extra rows if the LLM stopped early
@@ -49,11 +53,11 @@ with open('../data/train.pkl', 'rb') as f:
             training_sample_count_actual += 1
             if training_sample_count_actual == training_sample_count_desired + 1: # Need an input for the prediction
                 # Predict
-                pred = llm.generate(prompt)
+                pred = llm.generate(prompt, model)
                 # Format prediction
                 pred_array = parse_pred_string(pred)
                 # Visualize prediction
-                visualize.plot(input, output, pred_array, 'results/fewShot_'+str(pred_count_actual+1))
+                visualize.plot(input, output, pred_array, model + '/test_'+str(pred_count_actual+1))
                 # Evaluate loss
                 evaluate.eval(pred_array, output)
 
@@ -63,6 +67,6 @@ with open('../data/train.pkl', 'rb') as f:
                 pred_count_actual += 1
 
                 if pred_count_actual == pred_count_desired:
-                    evaluate.plot()
+                    evaluate.plot(model)
                     break
 
