@@ -1,3 +1,8 @@
 Today I generated a fine-tuning training set from the training file. OpenAPI recommends a certain format so I just
 iterated through the training file and create a new one with the format that is recommended. I initiated a fine-tuning
 job, which runs async in the open ai cloud. Once it is done I should be able to test with it on the test set.
+
+The fine tuning job failed after hours of waiting because it would "exceed billing hard limit." My limit is set to $10,
+so I'm going to reduce the training file size and try again. Unfortunately the error message didn't tell me the cost
+estimate, so I'm having to guess at how much training data to reduce. I cut the training data in half and started a
+new job.
