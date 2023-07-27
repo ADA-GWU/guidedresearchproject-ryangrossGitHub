@@ -1,0 +1,3 @@
+The fine tuning job finally ran today. I had to only use 1/128 of my training data in order to keep the training cost
+under $10. After running an evaluation, I can see that the performance of gpt 3 is better fine tuned, than with only
+few shot learning. However gpt 3.5 few shot learning still performed better than fine tuning gpt 3.

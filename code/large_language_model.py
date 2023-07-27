@@ -6,7 +6,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def generate(prompt, model):
     # GPT 3.0 Models use completion api
-    if model == "divinci":
+    if "divinci" or "ada" or "curie" or "babbage" in model:
         completion = openai.Completion.create(
             model=model,
             temperature=0,

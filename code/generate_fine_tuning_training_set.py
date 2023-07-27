@@ -18,7 +18,7 @@ training_sample_count_actual = 0
 pred_count_actual = 0
 with open('../data/train.pkl', 'rb') as f:
     train = pickle.load(f)
-    for i in range(int(len(train)/2)):
+    for i in range(int(len(train)/128)):
         traj = train[i]['traj']
 
         if len(traj) > sample_count * 2:  # need both input and output to be the same size or else gpt response is unreliable

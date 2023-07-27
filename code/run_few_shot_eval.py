@@ -5,10 +5,10 @@ import large_language_model as llm
 import evaluate
 import visualize
 
-model = "gpt-3.5-turbo"
+model = "curie"
 
 pred_count_desired = 10 # Number of predictions you want to average for accuracy/loss metrics
-pred_hours = 3 # This can be changed to get longer predictions
+pred_hours = 1 # This can be changed to get longer predictions
 minutes_per_sample = 10 # This is not configurable, this is how the data was gathered
 sample_count = int(60/minutes_per_sample * pred_hours)
 

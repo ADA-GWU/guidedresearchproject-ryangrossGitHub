@@ -4,7 +4,7 @@ import numpy as np
 
 device = torch.device("cpu")
 
-init_seqlen = 18
+init_seqlen = 6
 
 lat_min = 55.5
 lat_max = 58.0
@@ -14,9 +14,7 @@ lon_max = 13
 v_ranges = torch.tensor([2, 3, 0, 0]).to(device)
 v_roi_min = torch.tensor([lat_min, -7, 0, 0]).to(device)
 max_seqlen = init_seqlen
-masks = torch.tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-                       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-                       1., 1., 1., 1., 1., 1.]])
+masks = torch.tensor([[1., 1., 1., 1., 1., 1.]])
 masks = masks[:, :max_seqlen].to(device)
 
 pred_errors = []
@@ -85,23 +83,24 @@ def plot(folder):
     v_times = np.arange(len(preds)) / 6
     plt.plot(v_times, preds)
 
-    timestep = 6
+    timestep = 5
     plt.plot(1, preds[timestep], "o")
     plt.plot([1, 1], [0, preds[timestep]], "r")
     plt.plot([0, 1], [preds[timestep], preds[timestep]], "r")
     plt.text(1.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
 
-    timestep = 12
-    plt.plot(2, preds[timestep], "o")
-    plt.plot([2, 2], [0, preds[timestep]], "r")
-    plt.plot([0, 2], [preds[timestep], preds[timestep]], "r")
-    plt.text(2.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
+    # timestep = 12
+    # plt.plot(2, preds[timestep], "o")
+    # plt.plot([2, 2], [0, preds[timestep]], "r")
+    # plt.plot([0, 2], [preds[timestep], preds[timestep]], "r")
+    # plt.text(2.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
+    #
+    # timestep = 17
+    # plt.plot(3, preds[timestep], "o")
+    # plt.plot([3, 3], [0, preds[timestep]], "r")
+    # plt.plot([0, 3], [preds[timestep], preds[timestep]], "r")
+    # plt.text(3.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
 
-    timestep = 17
-    plt.plot(3, preds[timestep], "o")
-    plt.plot([3, 3], [0, preds[timestep]], "r")
-    plt.plot([0, 3], [preds[timestep], preds[timestep]], "r")
-    plt.text(3.12, preds[timestep] - 0.5, "{:.4f}".format(preds[timestep]), fontsize=10)
     plt.xlabel("Time (hours)")
     plt.ylabel("Prediction errors (miles)")
     plt.xlim([0, 12])
